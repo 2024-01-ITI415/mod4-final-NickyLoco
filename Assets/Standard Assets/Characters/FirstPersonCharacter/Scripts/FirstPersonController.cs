@@ -133,6 +133,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_MouseLook.UpdateCursorLock();
         }
 
+            void OnTriggerEnter(Collider other)
+        {
+            // Check if the object the player collided with has the "PickUp" tag.
+            if (other.gameObject.CompareTag("PickUp"))
+            {
+                Debug.Log("PickUp object collided with player.");
+                // Deactivate the collided object (making it disappear).
+                other.gameObject.SetActive(false);
+            }
+        }
+
 
         private void PlayJumpSound()
         {
