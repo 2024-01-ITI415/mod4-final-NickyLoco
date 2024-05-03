@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
+using TMPro;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
@@ -42,9 +43,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        //Counting and UI Additions
+        private int gasCount;
+        public TextMeshProUGUI countText;
+        public GameObject winTextObject;
+
+
         // Use this for initialization
         private void Start()
         {
+            //Additions
+            gasCount = 0;
+            SetCountText();
+            winTextObject.SetActive(false);
+
+            //Unchanged
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
@@ -141,8 +154,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 Debug.Log("PickUp object collided with player.");
                 // Deactivate the collided object (making it disappear).
                 other.gameObject.SetActive(false);
+                gasCount = gasCount + 1;
+                SetCountText();
             }
         }
+
+            void SetCountText()
+            {
+                countText.text = "Gas Cans: " + gasCount.ToString() + "/6";
+            if (gasCount == 6)
+                {
+                    winTextObject.SetActive(true);
+                }
+            }
 
 
         private void PlayJumpSound()
